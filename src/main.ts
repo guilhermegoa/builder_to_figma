@@ -1,10 +1,10 @@
 import { once, showUI } from '@create-figma-plugin/utilities'
-import { CloseHandler, CreateFigmaHandler } from './types/eventHandler.type'
+import { type CloseHandler, type CreateFigmaHandler } from './types/eventHandler.type'
 import { getBotJson } from './utils/flowDownloader'
 
-export default function () {
+export default function (): void {
   // CREATE_FIGMA event handler
-  once<CreateFigmaHandler>('CREATE_FIGMA', async function (key: string) {
+  once<CreateFigmaHandler>('CREATE_FIGMA', async function (key: string): Promise<void> {
     await figma.loadFontAsync({ family: 'Roboto', style: 'Regular' })
     await figma.loadFontAsync({ family: 'Roboto', style: 'Bold' })
     await figma.loadFontAsync({ family: 'Roboto', style: 'Medium' })
@@ -32,8 +32,11 @@ export default function () {
               const component = await figma.importComponentByKeyAsync('38a80132b23e2c09bfdaba75f9e837e2a3d73642')
               const instance: any = component.createInstance()
               instance.children[0].children[1].children[0].children[0].children[3].characters = 'Title teste' // title
-              instance.children[0].children[1].children[0].children[1].children[0].children[0].characters = action.content // body
-              instance.children[0].children[1].children[2].children[0].children.forEach((b: any, idx: any) => { if (idx < action.options.length) b.children[0].characters = action.options[idx] }) // buttons
+              instance.children[0].children[1].children[0].children[1].children[0].children[0].characters =
+                action.content // body
+              instance.children[0].children[1].children[2].children[0].children.forEach((b: any, idx: any) => {
+                if (idx < action.options.length) b.children[0].characters = action.options[idx]
+              }) // buttons
               instance.x = Number(block.position.left.replace('px', ''))
               instance.y = Number(block.position.top.replace('px', ''))
               break
@@ -42,7 +45,8 @@ export default function () {
               console.log('text')
               const component = await figma.importComponentByKeyAsync('2f43d0db522f94bc1a84b8f6a531fcde255679c4')
               const instance: any = component.createInstance()
-              instance.children[0].children[0].children[1].children[0].children[0].children[0].children[0].children[0].characters = 'Mesnsagem de teste'
+              instance.children[0].children[0].children[1].children[0].children[0].children[0].children[0].children[0].characters =
+                'Mesnsagem de teste'
               instance.x = Number(block.position.left.replace('px', ''))
               instance.y = Number(block.position.top.replace('px', ''))
               break

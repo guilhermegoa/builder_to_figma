@@ -20,5 +20,7 @@ module.exports = {
     sourceType: 'module'
   },
   plugins: ['react'],
-  rules: {}
+  rules: {
+    '@typescript-eslint/no-misused-promises': 'off'
+  }
 }
