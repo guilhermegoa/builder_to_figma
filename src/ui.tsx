@@ -5,25 +5,24 @@ import {
   Muted,
   render,
   Text,
-  TextboxNumeric,
+  Textbox,
   VerticalSpace
 } from '@create-figma-plugin/ui'
 import { emit } from '@create-figma-plugin/utilities'
 import { h } from 'preact'
 import { useCallback, useState } from 'preact/hooks'
 
-import { CloseHandler, CreateRectanglesHandler } from './types/eventHandler.type'
+import { CloseHandler, CreateFigmaHandler } from './types/eventHandler.type'
 
 function Plugin() {
-  const [count, setCount] = useState<number | null>(5)
-  const [countString, setCountString] = useState('5')
+  const [key, setKey] = useState('')
   const handleCreateRectanglesButtonClick = useCallback(
     function () {
-      if (count !== null) {
-        emit<CreateRectanglesHandler>('CREATE_RECTANGLES', count)
+      if (key !== null) {
+        emit<CreateFigmaHandler>('CREATE_FIGMA', key)
       }
     },
-    [count]
+    [key]
   )
   const handleCloseButtonClick = useCallback(function () {
     emit<CloseHandler>('CLOSE')
@@ -32,13 +31,12 @@ function Plugin() {
     <Container space="medium">
       <VerticalSpace space="large" />
       <Text>
-        <Muted>Count</Muted>
+        <Muted>Figma to Builder</Muted>
       </Text>
       <VerticalSpace space="small" />
-      <TextboxNumeric
-        onNumericValueInput={setCount}
-        onValueInput={setCountString}
-        value={countString}
+      <Textbox
+        onValueInput={setKey}
+        value={key}
         variant="border"
       />
       <VerticalSpace space="extraLarge" />
