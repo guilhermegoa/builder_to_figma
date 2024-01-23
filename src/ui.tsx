@@ -16,7 +16,8 @@ import { CloseHandler, CreateFigmaHandler } from './types/eventHandler.type'
 
 function Plugin() {
   const [key, setKey] = useState('')
-  const handleCreateRectanglesButtonClick = useCallback(
+
+  const handleCreateFigmaHandlerButtonClick = useCallback(
     function () {
       if (key !== null) {
         emit<CreateFigmaHandler>('CREATE_FIGMA', key)
@@ -24,9 +25,11 @@ function Plugin() {
     },
     [key]
   )
+
   const handleCloseButtonClick = useCallback(function () {
     emit<CloseHandler>('CLOSE')
   }, [])
+
   return (
     <Container space="medium">
       <VerticalSpace space="large" />
@@ -38,10 +41,11 @@ function Plugin() {
         onValueInput={setKey}
         value={key}
         variant="border"
+        placeholder="Key c2ltd3BwaG1ncmlPblByZz09"
       />
       <VerticalSpace space="extraLarge" />
       <Columns space="extraSmall">
-        <Button fullWidth onClick={handleCreateRectanglesButtonClick}>
+        <Button fullWidth onClick={handleCreateFigmaHandlerButtonClick}>
           Create
         </Button>
         <Button fullWidth onClick={handleCloseButtonClick} secondary>
