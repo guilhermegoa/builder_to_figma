@@ -1,7 +1,7 @@
 const config = {
   semi: false,
   tabWidth: 2,
-  printWidth: 120,
+  printWidth: 110,
   singleQuote: true,
   jsxSingleQuote: true,
   trailingComma: 'none',

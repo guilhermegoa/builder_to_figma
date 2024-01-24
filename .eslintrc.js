@@ -21,6 +21,7 @@ module.exports = {
   },
   plugins: ['react'],
   rules: {
-    '@typescript-eslint/no-misused-promises': 'off'
+    '@typescript-eslint/no-misused-promises': 'off',
+    'max-len': ['error', { code: 110 }]
   }
 }
