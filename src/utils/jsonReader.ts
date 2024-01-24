@@ -9,7 +9,7 @@ export interface BlockList {
     right: string
   }
   tags: string[]
-  condicaoSaida: any[]
+  condicaoSaida: IValidationCondiction[]
 }
 
 interface IndetifyedContent {
