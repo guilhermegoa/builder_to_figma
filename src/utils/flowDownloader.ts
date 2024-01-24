@@ -67,6 +67,6 @@ export async function getBotJson(key: string): Promise<BlockList[]> {
         return `Erro: ${error.message}`
       })
   ).resource
-
+  console.log(flow)
   return jsonReader(flow)
 }

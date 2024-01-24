@@ -34,7 +34,7 @@ export default function (): void {
                 '38a80132b23e2c09bfdaba75f9e837e2a3d73642'
               )
               const instance: any = component.createInstance()
-              instance.children[0].children[1].children[0].children[0].children[3].characters = 'Title teste' // title
+              instance.children[0].children[1].children[0].children[0].children[3].characters = 'Title teste'
               instance.children[0].children[1].children[0].children[1].children[0].children[0].characters =
                 action.content // body
               instance.children[0].children[1].children[2].children[0].children.forEach(
@@ -46,7 +46,8 @@ export default function (): void {
               instance.y = Number(block.position.top.replace('px', ''))
               break
             }
-            case 'text': {
+            case 'text':
+            case 'SendMessage': {
               const component = await figma.importComponentByKeyAsync(
                 '2f43d0db522f94bc1a84b8f6a531fcde255679c4'
               )
