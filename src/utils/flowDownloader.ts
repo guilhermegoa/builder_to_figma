@@ -2,11 +2,6 @@ import { type BlockList, jsonReader } from './jsonReader'
 
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
 async function getDeployHistory(key: string) {
-  // const myHeaders = new Headers()
-  // console.log(myHeaders)
-  // myHeaders.append('Authorization', key)
-  // myHeaders.append('Content-Type', 'application/json')
-
   const raw = JSON.stringify({
     id: 'f47ac10b-58cc-4372-a567-0e02b2c3d479',
     method: 'get',
@@ -39,10 +34,6 @@ async function getDeployHistory(key: string) {
 
 export async function getBotJson(key: string): Promise<BlockList[]> {
   const latestPublication = await getDeployHistory(key)
-  // const myHeaders = new Headers()
-  // myHeaders.append('Authorization', key)
-  // myHeaders.append('Content-Type', 'application/json')
-
   const raw = JSON.stringify({
     id: 'f47ac10b-58cc-4372-a567-0e02b2c3d479',
     method: 'get',
