@@ -11,6 +11,7 @@ export default function (): void {
     console.log('passou')
 
     const json = await getBotJson(key)
+    console.log(json)
 
     json.forEach((block: any) => {
       if (block.actions.length > 0) {
@@ -20,33 +21,40 @@ export default function (): void {
               console.log('chat-state')
               break
             case 'select': {
-              console.log('select')
-              const component = await figma.importComponentByKeyAsync('8ae2d54f6f76aa2bfe23df1361def19ef9c0249d')
+              const component = await figma.importComponentByKeyAsync(
+                '8ae2d54f6f76aa2bfe23df1361def19ef9c0249d'
+              )
               const instance: any = component.createInstance()
               instance.x = Number(block.position.left.replace('px', ''))
               instance.y = Number(block.position.top.replace('px', ''))
               break
             }
             case 'select-immediate': {
-              console.log('select-immediate')
-              const component = await figma.importComponentByKeyAsync('38a80132b23e2c09bfdaba75f9e837e2a3d73642')
+              const component = await figma.importComponentByKeyAsync(
+                '38a80132b23e2c09bfdaba75f9e837e2a3d73642'
+              )
               const instance: any = component.createInstance()
               instance.children[0].children[1].children[0].children[0].children[3].characters = 'Title teste' // title
               instance.children[0].children[1].children[0].children[1].children[0].children[0].characters =
                 action.content // body
-              instance.children[0].children[1].children[2].children[0].children.forEach((b: any, idx: any) => {
-                if (idx < action.options.length) b.children[0].characters = action.options[idx]
-              }) // buttons
+              instance.children[0].children[1].children[2].children[0].children.forEach(
+                (b: any, idx: any) => {
+                  if (idx < action.options.length) b.children[0].characters = action.options[idx]
+                }
+              ) // buttons
               instance.x = Number(block.position.left.replace('px', ''))
               instance.y = Number(block.position.top.replace('px', ''))
               break
             }
             case 'text': {
-              console.log('text')
-              const component = await figma.importComponentByKeyAsync('2f43d0db522f94bc1a84b8f6a531fcde255679c4')
+              const component = await figma.importComponentByKeyAsync(
+                '2f43d0db522f94bc1a84b8f6a531fcde255679c4'
+              )
               const instance: any = component.createInstance()
+              console.log(action)
+              // eslint-disable-next-line max-len
               instance.children[0].children[0].children[1].children[0].children[0].children[0].children[0].children[0].characters =
-                'Mesnsagem de teste'
+                action.content
               instance.x = Number(block.position.left.replace('px', ''))
               instance.y = Number(block.position.top.replace('px', ''))
               break
