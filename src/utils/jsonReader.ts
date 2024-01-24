@@ -8,6 +8,8 @@ export interface BlockList {
     left: string
     right: string
   }
+  tags: string[]
+  condicaoSaida: any[]
 }
 
 interface IndetifyedContent {
@@ -27,6 +29,33 @@ interface Action {
   }
 }
 
+interface Tag {
+  id: string
+  label: string
+  background: string
+  canChangeBackground: boolean
+}
+
+interface IConditions {
+  source: string
+  comparison: string
+  values: string[]
+  variable: string
+}
+interface IConditionOutput {
+  stateId: string
+  typeOfStateId: string
+  $connId: string
+  $id: string
+  conditions: IConditions[]
+  $invalid: boolean
+}
+
+interface IValidationCondiction {
+  blockDestinationId: string
+  condiction: string
+}
+
 export function jsonReader({ flow }: any): BlockList[] {
   // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
   const keys = Object.keys(flow)
@@ -44,10 +73,37 @@ export function jsonReader({ flow }: any): BlockList[] {
       destination,
       saidaPadrao: flow[key].$defaultOutput.stateId,
       actions,
-      position: flow[key].$position
+      position: flow[key].$position,
+      tags: flow[key].$tags.map((tag: Tag) => tag.label),
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+      condicaoSaida: identifyOutpoutConditions(flow[key].$conditionOutputs)
     })
   })
   return listBlocos
+}
+
+function validateCondition(condiction: IConditions): string {
+  const values = condiction.values.join(',')
+  if (condiction.source === 'input') {
+    return `if ${condiction.source} ${condiction.comparison} ${values}`
+  }
+  if (values.length > 0) {
+    return `if variable ${condiction.variable} ${condiction.comparison} to ${values}`
+  }
+  return `if variable ${condiction.variable} ${condiction.comparison}`
+}
+
+function identifyOutpoutConditions($conditionOutputs: IConditionOutput[]): IValidationCondiction[] {
+  const formattedObject: IValidationCondiction[] = []
+  $conditionOutputs.forEach(({ conditions, stateId }) => {
+    conditions.forEach((condiction) => {
+      formattedObject.push({
+        blockDestinationId: stateId,
+        condiction: validateCondition(condiction)
+      })
+    })
+  })
+  return formattedObject
 }
 
 function identifyBlockMessage(action: Action): string | boolean {
