@@ -6,7 +6,7 @@ export interface BlockList {
   actions: []
   position: {
     left: string
-    right: string
+    top: string
   }
   tags: string[]
   condicaoSaida: IValidationCondiction[]
