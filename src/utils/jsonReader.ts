@@ -10,6 +10,7 @@ export interface BlockList {
   }
   tags: string[]
   condicaoSaida: IValidationCondiction[]
+  figmaId: string
 }
 
 interface IndetifyedContent {
@@ -64,11 +65,13 @@ export function jsonReader({ flow }: any): BlockList[] {
     const actions = flow[key].$contentActions
       .map((action: { action: Action }) => identifyContent(action))
       .filter((validAction: any) => validAction)
-    const nome = flow[key].$title
+    const nome: string = flow[key].$title
+
     const id = flow[key].id
     const destination = flow[key].$conditionOutputs?.map((condiction: { stateId: any }) => condiction.stateId)
     listBlocos.push({
       id,
+      figmaId: identifyFigmaId(nome),
       nome,
       destination,
       saidaPadrao: flow[key].$defaultOutput.stateId,
@@ -80,6 +83,16 @@ export function jsonReader({ flow }: any): BlockList[] {
     })
   })
   return listBlocos
+}
+
+function identifyFigmaId(blockName: string): string {
+  const regex = /\b(\w(?:\.\d+)*)\s*-?\s*(.+)\b/
+  const figmaId = blockName.match(regex)
+  if (figmaId !== null && figmaId[1].length > 3) {
+    return figmaId[1]
+  } else {
+    return blockName
+  }
 }
 
 function validateCondition(condiction: IConditions): string {
@@ -100,10 +113,16 @@ function identifyOutpoutConditions($conditionOutputs: IConditionOutput[]): IVali
   const formattedObject: IValidationCondiction[] = []
   $conditionOutputs.forEach(({ conditions, stateId }) => {
     conditions.forEach((condiction) => {
-      formattedObject.push({
-        blockDestinationId: stateId,
-        condiction: validateCondition(condiction)
-      })
+      if (formattedObject.some((item) => item.blockDestinationId === stateId)) {
+        const indexOfExistingBlock = formattedObject.findIndex((item) => item.blockDestinationId === stateId)
+        formattedObject[indexOfExistingBlock].condiction =
+          `${formattedObject[indexOfExistingBlock].condiction} and ${validateCondition(condiction)}`
+      } else {
+        formattedObject.push({
+          blockDestinationId: stateId,
+          condiction: validateCondition(condiction)
+        })
+      }
     })
   })
   return formattedObject
