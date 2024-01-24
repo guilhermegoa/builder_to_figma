@@ -83,9 +83,12 @@ export function jsonReader({ flow }: any): BlockList[] {
 }
 
 function validateCondition(condiction: IConditions): string {
-  const values = condiction.values.join(',')
+  const values = condiction.values.join(' or ')
   if (condiction.source === 'input') {
-    return `if ${condiction.source} ${condiction.comparison} ${values}`
+    if (values.length > 0) {
+      return `if ${condiction.source} ${condiction.comparison} to ${values}`
+    }
+    return `if ${condiction.source} ${condiction.comparison}`
   }
   if (values.length > 0) {
     return `if variable ${condiction.variable} ${condiction.comparison} to ${values}`
