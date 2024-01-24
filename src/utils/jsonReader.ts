@@ -10,12 +10,12 @@ export interface BlockList {
   }
 }
 
-// interface IndetifyedContent {
-//   id: string
-//   typeOfContent: string
-//   content: string
-//   options?: any[]
-// }
+interface IndetifyedContent {
+  id: string
+  typeOfContent: string
+  content: string | boolean
+  options?: string
+}
 
 interface Action {
   type: string
@@ -32,7 +32,6 @@ export function jsonReader({ flow }: any): BlockList[] {
   const keys = Object.keys(flow)
   const listBlocos = [] as BlockList[]
   keys.forEach((key) => {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
     const actions = flow[key].$contentActions
       .map((action: { action: Action }) => identifyContent(action))
       .filter((validAction: any) => validAction)
@@ -82,7 +81,7 @@ function identifyTypeOfContent(action: Action): string {
   return typeOfContent
 }
 
-export function identifyContent({ action }: { action: Action }): any {
+export function identifyContent({ action }: { action: Action }): IndetifyedContent | undefined {
   if (action !== undefined) {
     const objetao = {
       id: action.$id,
