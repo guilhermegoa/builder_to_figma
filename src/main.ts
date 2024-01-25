@@ -2,6 +2,13 @@ import { once, showUI } from '@create-figma-plugin/utilities'
 import { type CloseHandler, type CreateFigmaHandler } from './types/eventHandler.type'
 import { getBotJson } from './utils/flowDownloader'
 import { type BlockList } from './utils/jsonReader'
+import {
+  createId,
+  createSelect,
+  createMacro,
+  createSendMessage,
+  createSelectImediate
+} from './instances/index'
 
 export default function (): void {
   // CREATE_FIGMA event handler
@@ -21,46 +28,15 @@ export default function (): void {
               case 'chat-state':
                 break
               case 'select': {
-                const component = await figma.importComponentByKeyAsync(
-                  '8ae2d54f6f76aa2bfe23df1361def19ef9c0249d'
-                )
-
-                const instance: any = component.createInstance()
-                instance.name = block.id
-                instance.x = Number(block.position.left.replace('px', ''))
-                instance.y = Number(block.position.top.replace('px', ''))
+                await createSelect(block)
                 break
               }
               case 'select-immediate': {
-                const component = await figma.importComponentByKeyAsync(
-                  '38a80132b23e2c09bfdaba75f9e837e2a3d73642'
-                )
-                const instance: any = component.createInstance()
-                instance.name = block.id
-                instance.children[0].children[1].children[0].children[0].children[3].characters =
-                  'Title teste'
-                instance.children[0].children[1].children[0].children[1].children[0].children[0].characters =
-                  action.content // body
-                instance.children[0].children[1].children[2].children[0].children.forEach(
-                  (b: any, idx: any) => {
-                    if (idx < action.options.length) b.children[0].characters = action.options[idx]
-                  }
-                ) // buttons
-                instance.x = Number(block.position.left.replace('px', ''))
-                instance.y = Number(block.position.top.replace('px', ''))
+                await createSelectImediate(block, action)
                 break
               }
               case 'SendMessage': {
-                const component = await figma.importComponentByKeyAsync(
-                  '2f43d0db522f94bc1a84b8f6a531fcde255679c4'
-                )
-                const instance: any = component.createInstance()
-                instance.name = block.id
-                // eslint-disable-next-line max-len
-                instance.children[0].children[0].children[1].children[0].children[0].children[0].children[0].children[0].characters =
-                  action.content
-                instance.x = Number(block.position.left.replace('px', ''))
-                instance.y = Number(block.position.top.replace('px', ''))
+                await createSendMessage(block, action)
                 break
               }
               default:
@@ -69,19 +45,9 @@ export default function (): void {
           }
         })
       } else {
-        const component = await figma.importComponentByKeyAsync('1af1e3e0d5fc69d496d3909c5143edb0f2ace6ea')
-        const instance: any = component.createInstance()
-        instance.name = block.id
-        instance.children[1].characters = block.figmaId
-        instance.x = Number(block.position.left.replace('px', ''))
-        instance.y = Number(block.position.top.replace('px', ''))
+        await createMacro(block)
       }
-      const idComponent = await figma.importComponentByKeyAsync('6ca6d4651bef9bda556960d72a8427c0f44f25e0')
-      const idInstance: any = idComponent.createInstance()
-      idInstance.x = Number(block.position.left.replace('px', ''))
-      idInstance.y = Number(block.position.top.replace('px', '')) - 30
-      idInstance.name = block.figmaId
-      // idInstance.children[0].characters = 'A.1.2.3' <--- Quebrado
+      await createId(block)
     }
 
     json.forEach(async (block: BlockList) => {
