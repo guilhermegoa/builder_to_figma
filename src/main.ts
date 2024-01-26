@@ -13,9 +13,12 @@ import {
 export default function (): void {
   // CREATE_FIGMA event handler
   once<CreateFigmaHandler>('CREATE_FIGMA', async function (key: string): Promise<void> {
-    await figma.loadFontAsync({ family: 'Roboto', style: 'Regular' })
-    await figma.loadFontAsync({ family: 'Roboto', style: 'Bold' })
-    await figma.loadFontAsync({ family: 'Roboto', style: 'Medium' })
+    await Promise.all([
+      figma.loadFontAsync({ family: 'Roboto', style: 'Regular' }),
+      figma.loadFontAsync({ family: 'Roboto', style: 'Bold' }),
+      figma.loadFontAsync({ family: 'Roboto', style: 'Medium' }),
+      figma.loadFontAsync({ family: 'Arial', style: 'Regular' })
+    ])
 
     const json = await getBotJson(key)
     console.log(json)
