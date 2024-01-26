@@ -31,6 +31,7 @@ interface Action {
   settings: {
     text?: any
     content: any
+    rawContent?: string
   }
 }
 
@@ -168,6 +169,8 @@ function identifyBlockMessage(action: Action): string | boolean {
       content = action.settings.content?.text
     } else if (typeof action.settings.content === 'string') {
       content = action.settings.content
+    } else if (action.settings?.rawContent !== undefined) {
+      content = action.settings?.rawContent
     } else {
       return false
     }
