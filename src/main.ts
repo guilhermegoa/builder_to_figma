@@ -9,6 +9,7 @@ import {
   createSendMessage,
   createSelectImediate
 } from './instances/index'
+import createTracking from './instances/tracking'
 
 export default function (): void {
   // CREATE_FIGMA event handler
@@ -52,10 +53,17 @@ export default function (): void {
       } else {
         await createMacro(block)
       }
+      const teste2 = [] as InstanceNode[]
+
+      block.trackings.forEach(async (tracking, index) =>
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+        teste2.push(await createTracking({ tracking, position: block.position, index }))
+      )
+
       const idComponent = await createId(block)
 
       if (component !== null) {
-        const group = figma.group([idComponent, component], figma.currentPage)
+        const group = figma.group([idComponent, component, ...teste2], figma.currentPage)
         group.name = block.figmaId
       }
     }

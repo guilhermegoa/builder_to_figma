@@ -11,10 +11,10 @@ export interface BlockList {
   tags: string[]
   condicaoSaida: IValidationCondiction[]
   figmaId: string
-  trackings: {
-    category: string
-    action: string
-  }
+  trackings: Array<{
+    category?: string
+    action?: string
+  }>
 }
 
 interface IndetifyedContent {
@@ -202,31 +202,33 @@ export function identifyContent({ action }: { action: Action }): IndetifyedConte
   }
 }
 
+export interface ITracking {
+  category?: string
+  action?: string
+}
 function identifyTrackings({
   $enteringCustomActions,
   $leavingCustomActions
 }: {
   $enteringCustomActions: ICustomAction[]
   $leavingCustomActions: ICustomAction[]
-}): any {
-  const enteringTrackings = $enteringCustomActions.map((action) => {
-    if (action.type === 'TrackEvent') {
+}): ITracking[] {
+  const enteringTrackings = $enteringCustomActions
+    .filter((action) => action.type === 'TrackEvent')
+    .map((action) => {
       return {
         category: action.settings.category,
         action: action.settings.action
       }
-    }
-    return false
-  })
-  const leavingTrackings = $leavingCustomActions.map((action) => {
-    if (action.type === 'TrackEvent') {
+    })
+  const leavingTrackings = $leavingCustomActions
+    .filter((action) => action.type === 'TrackEvent')
+    .map((action) => {
       return {
         category: action.settings.category,
         action: action.settings.action
       }
-    }
-    return false
-  })
-  const trackings = [...enteringTrackings, ...leavingTrackings].filter((tracking) => tracking)
+    })
+  const trackings = [...enteringTrackings, ...leavingTrackings]
   return trackings
 }
