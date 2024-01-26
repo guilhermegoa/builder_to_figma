@@ -51,19 +51,19 @@ export default function (): void {
           }
         })
       } else {
-        await createMacro(block)
+        component = await createMacro(block)
       }
-      const teste2 = [] as InstanceNode[]
+      const trackingNodes = [] as InstanceNode[]
 
       block.trackings.forEach(async (tracking, index) =>
         // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-        teste2.push(await createTracking({ tracking, position: block.position, index }))
+        trackingNodes.push(await createTracking({ tracking, position: block.position, index }))
       )
 
       const idComponent = await createId(block)
 
       if (component !== null) {
-        const group = figma.group([idComponent, component, ...teste2], figma.currentPage)
+        const group = figma.group([idComponent, component, ...trackingNodes], figma.currentPage)
         group.name = block.figmaId
       }
     }
