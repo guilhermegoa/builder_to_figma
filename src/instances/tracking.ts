@@ -13,7 +13,7 @@ async function createTracking({ tracking, position, index }: ICreateTracking): P
   const instance: InstanceNode = idComponent.createInstance()
   instance.x = Number(position.left.replace('px', '')) * 2 - 230
   instance.y = Number(position.top.replace('px', '')) * 2 + index * 60
-
+  // TODO: futuramente usar o instance.height para fazer calculos dinamicos da posição y
   const title = instance.children[0] as TextNode
   const content = instance.children[1] as TextNode
 
