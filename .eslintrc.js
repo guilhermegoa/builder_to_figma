@@ -25,6 +25,7 @@ module.exports = {
     'max-len': ['error', { code: 110 }],
     'space-before-function-paren': 'off',
     '@typescript-eslint/space-before-function-paren': 'off',
-    '@typescript-eslint/prefer-nullish-coalescing': 'off'
+    '@typescript-eslint/prefer-nullish-coalescing': 'off',
+    '@typescript-eslint/no-non-null-assertion': 'off'
   }
 }
