@@ -13,14 +13,17 @@ import {
 export default function (): void {
   // CREATE_FIGMA event handler
   once<CreateFigmaHandler>('CREATE_FIGMA', async function (key: string): Promise<void> {
-    await figma.loadFontAsync({ family: 'Roboto', style: 'Regular' })
-    await figma.loadFontAsync({ family: 'Roboto', style: 'Bold' })
-    await figma.loadFontAsync({ family: 'Roboto', style: 'Medium' })
+    void Promise.all([
+      figma.loadFontAsync({ family: 'Roboto', style: 'Regular' }),
+      figma.loadFontAsync({ family: 'Roboto', style: 'Bold' }),
+      figma.loadFontAsync({ family: 'Roboto', style: 'Medium' })
+    ])
 
     const json = await getBotJson(key)
     console.log(json)
 
     async function createElements(block: BlockList): Promise<void> {
+      let component = null
       if (block.actions.length > 0) {
         block.actions.forEach(async (action: any) => {
           if (action.content !== false) {
@@ -28,16 +31,16 @@ export default function (): void {
               case 'chat-state':
                 break
               case 'select': {
-                await createSelect(block)
+                component = await createSelect(block)
                 break
               }
               case 'select-immediate': {
-                await createSelectImediate(block, action)
+                component = await createSelectImediate(block, action)
                 break
               }
               case 'text':
               case 'SendMessage': {
-                await createSendMessage(block, action)
+                component = await createSendMessage(block, action)
                 break
               }
               default:
@@ -48,7 +51,12 @@ export default function (): void {
       } else {
         await createMacro(block)
       }
-      await createId(block)
+      const idComponent = await createId(block)
+
+      if (component !== null) {
+        const group = figma.group([idComponent, component], figma.currentPage)
+        group.name = block.figmaId
+      }
     }
 
     json.forEach(async (block: BlockList) => {
