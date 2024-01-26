@@ -17,8 +17,8 @@ async function createTracking({ tracking, position, index }: ICreateTracking): P
   const title = instance.children[0] as TextNode
   const content = instance.children[1] as TextNode
 
-  title.characters = tracking.category as any
-  content.characters = tracking.action as any
+  title.characters = tracking.category!
+  content.characters = tracking.action!
 
   return instance
 }
