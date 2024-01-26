@@ -29,7 +29,7 @@ interface Action {
   $id: string
   $typeOfContent: string
   settings: {
-    text: any
+    text?: any
     content: any
   }
 }
@@ -162,10 +162,10 @@ function identifyBlockMessage(action: Action): string | boolean {
   let content = ''
 
   if (action.settings !== undefined) {
-    if (action.settings.text !== undefined) {
+    if (action.settings?.text !== undefined) {
       content = action.settings.text
-    } else if (action.settings.content.text !== undefined) {
-      content = action.settings.content.text
+    } else if (action.settings.content?.text !== undefined) {
+      content = action.settings.content?.text
     } else if (typeof action.settings.content === 'string') {
       content = action.settings.content
     } else {
