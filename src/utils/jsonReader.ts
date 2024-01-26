@@ -11,6 +11,10 @@ export interface BlockList {
   tags: string[]
   condicaoSaida: IValidationCondiction[]
   figmaId: string
+  trackings: {
+    category: string
+    action: string
+  }
 }
 
 interface IndetifyedContent {
@@ -57,6 +61,30 @@ interface IValidationCondiction {
   condiction: string
 }
 
+interface ICustomAction {
+  $id: string
+  $typeOfContent?: string
+  type: string
+  $title: string
+  $invalid: boolean
+  settings: {
+    function?: string
+    source?: string
+    inputVariables?: string[]
+    outputVariable?: string
+    LocalTimeZoneEnabled?: boolean
+    extras?: any
+    category?: string
+    action?: string
+  }
+  conditions: Array<{
+    source: string
+    comparison: string
+    values: string[]
+    $$hashKey: string
+  }>
+}
+
 export function jsonReader({ flow }: any): BlockList[] {
   // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
   const keys = Object.keys(flow)
@@ -79,7 +107,9 @@ export function jsonReader({ flow }: any): BlockList[] {
       position: flow[key].$position,
       tags: flow[key].$tags.map((tag: Tag) => tag.label),
       // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-      condicaoSaida: identifyOutpoutConditions(flow[key].$conditionOutputs)
+      condicaoSaida: identifyOutpoutConditions(flow[key].$conditionOutputs),
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+      trackings: identifyTrackings(flow[key])
     })
   })
   return listBlocos
@@ -149,14 +179,13 @@ function identifyBlockMessage(action: Action): string | boolean {
 }
 
 function identifyTypeOfContent(action: Action): string {
-  let typeOfContent = ''
-  if (action.$typeOfContent !== undefined) {
-    typeOfContent = action.$typeOfContent
+  if (action.$typeOfContent !== undefined && action.$typeOfContent !== '') {
+    return action.$typeOfContent
   }
   if (action.type !== undefined) {
-    typeOfContent = action.type
+    return action.type
   }
-  return typeOfContent
+  return ''
 }
 
 export function identifyContent({ action }: { action: Action }): IndetifyedContent | undefined {
@@ -171,4 +200,33 @@ export function identifyContent({ action }: { action: Action }): IndetifyedConte
       return objetao
     }
   }
+}
+
+function identifyTrackings({
+  $enteringCustomActions,
+  $leavingCustomActions
+}: {
+  $enteringCustomActions: ICustomAction[]
+  $leavingCustomActions: ICustomAction[]
+}): any {
+  const enteringTrackings = $enteringCustomActions.map((action) => {
+    if (action.type === 'TrackEvent') {
+      return {
+        category: action.settings.category,
+        action: action.settings.action
+      }
+    }
+    return false
+  })
+  const leavingTrackings = $leavingCustomActions.map((action) => {
+    if (action.type === 'TrackEvent') {
+      return {
+        category: action.settings.category,
+        action: action.settings.action
+      }
+    }
+    return false
+  })
+  const trackings = [...enteringTrackings, ...leavingTrackings].filter((tracking) => tracking)
+  return trackings
 }

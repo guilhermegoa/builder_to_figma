@@ -35,6 +35,7 @@ export default function (): void {
                 await createSelectImediate(block, action)
                 break
               }
+              case 'text':
               case 'SendMessage': {
                 await createSendMessage(block, action)
                 break
