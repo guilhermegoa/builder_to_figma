@@ -1,14 +1,14 @@
 import { type ITracking } from '../utils/jsonReader'
 
-async function createTracking({
-  tracking,
-  position,
-  index
-}: {
+interface ICreateTracking {
   tracking: ITracking
-  position: { left: string; top: string }
+  position: {
+    left: string
+    top: string
+  }
   index: number
-}): Promise<any> {
+}
+async function createTracking({ tracking, position, index }: ICreateTracking): Promise<any> {
   const idComponent = await figma.importComponentByKeyAsync('0dececd32f95c805215e31e5dedbdbc9bb589e93')
   const instance: InstanceNode = idComponent.createInstance()
   instance.x = Number(position.left.replace('px', '')) * 2 - 230
