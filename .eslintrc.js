@@ -4,12 +4,13 @@ module.exports = {
     es2021: true
   },
   extends: ['standard-with-typescript', 'plugin:react/recommended'],
+  ignorePatterns: ['src/**/*.test.ts', '*.js', '*.json'],
   overrides: [
     {
       env: {
         node: true
       },
-      files: ['src/**/*.ts', 'src/**/*.js'],
+      files: ['src/**/*.ts'],
       parserOptions: {
         sourceType: 'script'
       }
