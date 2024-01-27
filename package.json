@@ -29,7 +29,7 @@
     "build": "build-figma-plugin --typecheck --minify",
     "watch": "build-figma-plugin --typecheck --watch",
     "postinstall": "husky install",
-    "test": "jest"
+    "test": "jest --coverage"
   },
   "figma-plugin": {
     "editorType": [
