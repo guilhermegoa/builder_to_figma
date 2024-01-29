@@ -11,8 +11,13 @@ interface ICreateTracking {
 async function createTracking({ tracking, position, index }: ICreateTracking): Promise<any> {
   const idComponent = await figma.importComponentByKeyAsync('0dececd32f95c805215e31e5dedbdbc9bb589e93')
   const instance: InstanceNode = idComponent.createInstance()
-  instance.x = Number(position.left.replace('px', '')) * 2 - 230
+  instance.x = Number(position.left.replace('px', '')) * 2
   instance.y = Number(position.top.replace('px', '')) * 2
+  instance.relativeTransform = [
+    [-1, 1.2246468525851679e-16, instance.x],
+    [1.2246468525851679e-16, 1, instance.y]
+  ]
+
   // TODO: futuramente usar o instance.height para fazer calculos dinamicos da posição y
   const title = instance.children[0] as TextNode
   const content = instance.children[1] as TextNode
