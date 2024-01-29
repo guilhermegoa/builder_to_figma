@@ -10,6 +10,8 @@ import {
   createSelectImediate
 } from './instances/index'
 import createTracking from './instances/tracking'
+import createDirectionsComponent from './instances/directions'
+import calculateY from './utils/calculateY'
 
 export default function (): void {
   // CREATE_FIGMA event handler
@@ -23,7 +25,7 @@ export default function (): void {
 
     const json = await getBotJson(key)
     console.log(json)
-
+    let lastBlockPosition = { x: 0, y: 0, heigth: 0, width: 0 }
     async function createElements(block: BlockList): Promise<void> {
       let component = null
       if (block.actions.length > 0) {
@@ -55,16 +57,37 @@ export default function (): void {
       }
       const trackingNodes = [] as InstanceNode[]
 
-      block.trackings.forEach(async (tracking, index) =>
+      let trackingY: { y: number; height: number } = { y: 0, height: 0 }
+      block.trackings.forEach(async (tracking, index) => {
         // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-        trackingNodes.push(await createTracking({ tracking, position: block.position, index }))
-      )
-
+        const newNode: InstanceNode = await createTracking({ tracking, position: block.position, index })
+        trackingY = calculateY(newNode, trackingY)
+        trackingNodes.push(newNode)
+      })
       const idComponent = await createId(block)
+
+      const directionsNodes = [] as InstanceNode[]
+
+      block.condicaoSaida.forEach(async (item) =>
+        directionsNodes.push(await createDirectionsComponent(block, item))
+      )
 
       if (component !== null) {
         const group = figma.group([idComponent, component, ...trackingNodes], figma.currentPage)
         group.name = block.figmaId
+        const absolutePositionX = lastBlockPosition.x + lastBlockPosition.width
+        const absolutePositionY = lastBlockPosition.y + lastBlockPosition.heigth
+        if (lastBlockPosition.x !== 0) {
+          if (group.x > lastBlockPosition.x && group.x < absolutePositionX) {
+            group.x = absolutePositionX + 10
+          }
+        }
+        if (lastBlockPosition.y !== 0) {
+          if (group.y > lastBlockPosition.y && group.y < absolutePositionY) {
+            group.y = absolutePositionY + 10
+          }
+        }
+        lastBlockPosition = { x: group.x, y: group.y, heigth: group.height, width: group.width }
       }
     }
 
