@@ -57,7 +57,7 @@ interface IConditionOutput {
   $invalid: boolean
 }
 
-interface IValidationCondiction {
+export interface IValidationCondiction {
   blockDestinationId: string
   condiction: string
 }
