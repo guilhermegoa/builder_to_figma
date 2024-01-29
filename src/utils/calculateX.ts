@@ -3,7 +3,7 @@ function calculateX(
   { x, width }: { x: number; width: number }
 ): { x: number; width: number } {
   if (x !== 0) {
-    instance.x = x + width + 5
+    instance.x = x + width
   }
 
   return {

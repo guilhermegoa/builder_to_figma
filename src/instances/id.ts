@@ -1,4 +1,5 @@
 async function createId(block: any): Promise<InstanceNode> {
+  console.log('Entrou na criaçao')
   const idComponent = await figma.importComponentByKeyAsync('6ca6d4651bef9bda556960d72a8427c0f44f25e0')
   const instance: InstanceNode = idComponent.createInstance()
   instance.x = Number(block.position.left.replace('px', '')) * 2

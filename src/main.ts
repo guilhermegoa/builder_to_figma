@@ -10,8 +10,9 @@ import {
   createSelectImediate
 } from './instances/index'
 import createTracking from './instances/tracking'
-import createDirectionsComponent from './instances/directions'
+// import createObservationComponent from './instances/observation'
 import calculateY from './utils/calculateY'
+// import calculateX from './utils/calculateX'
 
 export default function (): void {
   // CREATE_FIGMA event handler
@@ -27,7 +28,7 @@ export default function (): void {
     console.log(json)
     let lastBlockPosition = { x: 0, y: 0, heigth: 0, width: 0 }
     async function createElements(block: BlockList): Promise<void> {
-      let component = null
+      let component: any = null
       if (block.actions.length > 0) {
         block.actions.forEach(async (action: any) => {
           if (action.content !== false) {
@@ -55,25 +56,35 @@ export default function (): void {
       } else {
         component = await createMacro(block)
       }
-      const trackingNodes = [] as InstanceNode[]
 
-      let trackingY: { y: number; height: number } = { y: 0, height: 0 }
+      const trackingNodes = [] as InstanceNode[]
+      let trackingY = { y: 0, height: 0 }
       block.trackings.forEach(async (tracking, index) => {
         // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
         const newNode: InstanceNode = await createTracking({ tracking, position: block.position, index })
         trackingY = calculateY(newNode, trackingY)
         trackingNodes.push(newNode)
       })
+
       const idComponent = await createId(block)
 
-      const directionsNodes = [] as InstanceNode[]
+      // const directionsObservation = block.condicaoSaida.map((item) => {
+      //   const figmaId = json.find((block) => block.id === item.blockDestinationId)?.figmaId
+      //   return `${item.condiction} --> go to ${figmaId}`
+      // }).join('\n')
 
-      block.condicaoSaida.forEach(async (item) =>
-        directionsNodes.push(await createDirectionsComponent(block, item))
-      )
-
+      // const directionObservationNode = await createObservationComponent(block, directionsObservation)
       if (component !== null) {
-        const group = figma.group([idComponent, component, ...trackingNodes], figma.currentPage)
+        const group = figma.group(
+          [
+            idComponent,
+            component,
+            // directionObservationNode,
+            ...trackingNodes
+          ],
+          figma.currentPage
+        )
+
         group.name = block.figmaId
         const absolutePositionX = lastBlockPosition.x + lastBlockPosition.width
         const absolutePositionY = lastBlockPosition.y + lastBlockPosition.heigth
