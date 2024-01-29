@@ -1,0 +1,80 @@
+// For more information, visit:
+// https://go.microsoft.com/fwlink/?linkid=830387
+{
+  "version": "0.2.0",
+  "compounds": [
+    {
+      "name": "Run Figma then Attach",
+      "configurations": ["Run Figma", "Wait to Attach to Figma"],
+      "stopAll": false,
+      "presentation": {
+        "hidden": false,
+        // __ will place this at the top of the debug menu
+        "group": "__",
+        "order": 1
+      }
+    }
+  ],
+  "configurations": [
+    {
+      "name": "Run Figma",
+      "type": "node",
+      "request": "launch",
+      "cwd": "${workspaceFolder}",
+      "internalConsoleOptions": "neverOpen",
+      "runtimeExecutable": "C:/Users/thade/AppData/Local/Figma/app-116.15.15/Figma",
+      "runtimeArgs": ["--args", "--remote-debugging-port=9222", "--inspect", "--log-level=2", "-v=2"],
+      "outputCapture": "std",
+      "autoAttachChildProcesses": true,
+      "console": "integratedTerminal",
+      "presentation": {
+        "hidden": false,
+        "group": "Figma",
+        "order": 1
+      }
+    },
+    {
+      "preLaunchTask": "Wait for it",
+      "name": "Wait to Attach to Figma",
+      "type": "chrome",
+      "request": "attach",
+      "address": "localhost",
+      "port": 9222,
+      "targetSelection": "pick",
+      "pauseForSourceMap": true,
+      "pathMapping": {
+        "/file/": "${workspaceRoot}/",
+        "../src/": "${workspaceRoot}/src/",
+        "src/": "${workspaceRoot}/src/"
+      },
+      "outFiles": ["${workspaceFolder}/build/*.js", "${workspaceFolder}/build/*.js.map"],
+      "presentation": {
+        "hidden": true,
+        "group": "Figma",
+        "order": 2
+      },
+      "internalConsoleOptions": "openOnSessionStart"
+    },
+    {
+      "name": "Attach to Figma",
+      "type": "chrome",
+      "request": "attach",
+      "address": "localhost",
+      "port": 9222,
+      "targetSelection": "pick",
+      "pauseForSourceMap": true,
+      "pathMapping": {
+        "/file/": "${workspaceRoot}/",
+        "../src/": "${workspaceRoot}/src/",
+        "src/": "${workspaceRoot}/src/"
+      },
+      "outFiles": ["${workspaceFolder}/build/*.js", "${workspaceFolder}/build/*.js.map"],
+      "presentation": {
+        "hidden": false,
+        "group": "Figma",
+        "order": 2
+      },
+      "internalConsoleOptions": "openOnSessionStart"
+    }
+  ]
+}

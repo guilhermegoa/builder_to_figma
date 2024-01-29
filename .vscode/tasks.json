@@ -1,0 +1,30 @@
+{
+  // See https://go.microsoft.com/fwlink/?LinkId=733558
+  // for the documentation about the tasks.json format
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Wait for it",
+      "detail": "Sleep for 10 seconds",
+      "type": "shell",
+      "command": "sleep 10",
+      "isBackground": false,
+      "windows": {
+        "command": "ping 127.0.0.1 -n 10 > nul"
+      },
+      "runOptions": {
+        "instanceLimit": 1
+      },
+      "promptOnClose": false,
+      "hide": false,
+      "presentation": {
+        "reveal": "never",
+        "panel": "dedicated",
+        "showReuseMessage": false,
+        "close": true,
+        "echo": false
+      },
+      "problemMatcher": []
+    }
+  ]
+}
