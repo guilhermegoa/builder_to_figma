@@ -1,6 +1,7 @@
 import { type ITracking } from '../utils/jsonReader'
 
 interface ICreateTracking {
+  component: ComponentNode
   tracking: ITracking
   position: {
     left: string
@@ -8,9 +9,8 @@ interface ICreateTracking {
   }
   index: number
 }
-async function createTracking({ tracking, position, index }: ICreateTracking): Promise<any> {
-  const idComponent = await figma.importComponentByKeyAsync('0dececd32f95c805215e31e5dedbdbc9bb589e93')
-  const instance: InstanceNode = idComponent.createInstance()
+function createTracking({ tracking, position, index, component }: ICreateTracking): InstanceNode {
+  const instance: InstanceNode = component.createInstance()
   instance.x = Number(position.left.replace('px', '')) * 2
   instance.y = Number(position.top.replace('px', '')) * 2
   instance.relativeTransform = [
@@ -24,7 +24,7 @@ async function createTracking({ tracking, position, index }: ICreateTracking): P
 
   title.characters = tracking.category!
   content.characters = tracking.action!
-
+  figma.currentPage.appendChild(instance)
   return instance
 }
 
