@@ -12,7 +12,6 @@ import {
 import createTracking from './instances/tracking'
 import createObservationComponent from './instances/observation'
 import calculateY from './utils/calculateY'
-// import createComponent from './utils/createComponent'
 // import calculateX from './utils/calculateX'
 
 export default function (): void {
@@ -29,7 +28,7 @@ export default function (): void {
       trackingComponent
     ] = await Promise.all([
       figma.importComponentByKeyAsync('6ca6d4651bef9bda556960d72a8427c0f44f25e0'),
-      figma.importComponentByKeyAsync('2f43d0db522f94bc1a84b8f6a531fcde255679c4'),
+      // figma.importComponentByKeyAsync('2f43d0db522f94bc1a84b8f6a531fcde255679c4'),
       figma.importComponentByKeyAsync('1af1e3e0d5fc69d496d3909c5143edb0f2ace6ea'),
       figma.importComponentByKeyAsync('467d5c428b3b2c1b82447d7da01aaa0c3209cba2'),
       figma.importComponentByKeyAsync('8ae2d54f6f76aa2bfe23df1361def19ef9c0249d'),
@@ -81,7 +80,6 @@ export default function (): void {
       const trackingNodes = [] as InstanceNode[]
       let trackingY = { y: 0, height: 0 }
       block.trackings.forEach(async (tracking, index) => {
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
         const newNode: InstanceNode = createTracking({
           tracking,
           position: block.position,
