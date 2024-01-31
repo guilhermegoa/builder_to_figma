@@ -7,13 +7,12 @@ import {
   createSelect,
   createMacro,
   createSendMessage,
-  createSelectImediate
+  createSelectImediate,
+  createTracking,
+  createObservationComponent
 } from './instances/index'
-import createTracking from './instances/tracking'
-import createObservationComponent from './instances/observation'
 import components from './utils/figmaComponents'
 import loadFigmaFonts from './utils/loadFigmaFonts'
-// import calculateX from './utils/calculateX'
 
 export default function (): void {
   // CREATE_FIGMA event handler
@@ -43,7 +42,7 @@ export default function (): void {
               case 'chat-state':
                 break
               case 'select': {
-                instance = createSelect(selectComponent, block)
+                instance = createSelect(selectComponent, block, action)
                 break
               }
               case 'select-immediate': {
@@ -64,18 +63,6 @@ export default function (): void {
         instance = createMacro(macroComponent, block)
       }
 
-      // const trackingNodes = [] as InstanceNode[]
-      // let trackingY = { y: 0, height: 0 }
-      // block.trackings.forEach(async (tracking, index) => {
-      //   const newNode: InstanceNode = createTracking({
-      //     tracking,
-      //     position: block.position,
-      //     index,
-      //     component: trackingComponent
-      //   })
-      //   trackingY = calculateY(newNode, trackingY)
-      //   trackingNodes.push(newNode)
-      // })
       createTracking(trackingComponent, block)
       const idInstance = createId(idComponent, block)
 
