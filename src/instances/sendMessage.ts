@@ -1,4 +1,6 @@
-function createSendMessage(component: ComponentNode, block: any, action: any): InstanceNode {
+import { type Action, type BlockList } from '../utils/jsonReader'
+
+function createSendMessage(component: ComponentNode, block: BlockList, action: Action): InstanceNode {
   const instance: any = component.createInstance()
   instance.name = block.id
   // eslint-disable-next-line max-len

@@ -1,8 +1,10 @@
+import { type BlockList } from '../utils/jsonReader'
+
 interface Option extends FrameNode {
   children: any[] | TextNode[]
 }
 
-function createSelect(component: ComponentNode, block: any): InstanceNode {
+function createSelect(component: ComponentNode, block: BlockList): InstanceNode {
   const instance: InstanceNode = component.createInstance()
   instance.name = block.id
   instance.x = Number(block.position.left.replace('px', '')) * 2

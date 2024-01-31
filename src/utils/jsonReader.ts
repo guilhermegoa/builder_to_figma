@@ -24,10 +24,12 @@ interface IndetifyedContent {
   options?: string
 }
 
-interface Action {
+export interface Action {
   type: string
   $id: string
   $typeOfContent: string
+  content?: string
+  options: any[]
   settings: {
     text?: any
     content: any

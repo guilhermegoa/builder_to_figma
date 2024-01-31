@@ -1,4 +1,6 @@
-function createSelectImediate(component: ComponentNode, block: any, action: any): InstanceNode {
+import { type Action, type BlockList } from '../utils/jsonReader'
+
+function createSelectImediate(component: ComponentNode, block: BlockList, action: Action): InstanceNode {
   const instance: any = component.createInstance()
   instance.name = block.id
   instance.children[0].children[1].children[0].children[0].children[3].characters = 'Title teste'

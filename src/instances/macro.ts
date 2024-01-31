@@ -1,4 +1,6 @@
-function createMacro(component: ComponentNode, block: any): InstanceNode {
+import { type BlockList } from '../utils/jsonReader'
+
+function createMacro(component: ComponentNode, block: BlockList): InstanceNode {
   const instance: any = component.createInstance()
   instance.name = block.id
   instance.children[1].characters = block.figmaId
