@@ -11,7 +11,8 @@ import {
 } from './instances/index'
 import createTracking from './instances/tracking'
 import createObservationComponent from './instances/observation'
-import calculateY from './utils/calculateY'
+import components from './utils/figmaComponents'
+import loadFigmaFonts from './utils/loadFigmaFonts'
 // import calculateX from './utils/calculateX'
 
 export default function (): void {
@@ -26,23 +27,9 @@ export default function (): void {
       selectImediateComponent,
       sendMessageComponent,
       trackingComponent
-    ] = await Promise.all([
-      figma.importComponentByKeyAsync('6ca6d4651bef9bda556960d72a8427c0f44f25e0'),
-      // figma.importComponentByKeyAsync('2f43d0db522f94bc1a84b8f6a531fcde255679c4'),
-      figma.importComponentByKeyAsync('1af1e3e0d5fc69d496d3909c5143edb0f2ace6ea'),
-      figma.importComponentByKeyAsync('467d5c428b3b2c1b82447d7da01aaa0c3209cba2'),
-      figma.importComponentByKeyAsync('487efbf0f24c7f25ed162ea14e8389816388d0b1'),
-      figma.importComponentByKeyAsync('38a80132b23e2c09bfdaba75f9e837e2a3d73642'),
-      figma.importComponentByKeyAsync('2f43d0db522f94bc1a84b8f6a531fcde255679c4'),
-      figma.importComponentByKeyAsync('0dececd32f95c805215e31e5dedbdbc9bb589e93')
-    ])
+    ] = await components
 
-    await Promise.all([
-      figma.loadFontAsync({ family: 'Roboto', style: 'Regular' }),
-      figma.loadFontAsync({ family: 'Roboto', style: 'Bold' }),
-      figma.loadFontAsync({ family: 'Roboto', style: 'Medium' }),
-      figma.loadFontAsync({ family: 'Arial', style: 'Regular' })
-    ])
+    await loadFigmaFonts()
 
     const json = await getBotJson(key)
     console.log(json)
@@ -77,19 +64,19 @@ export default function (): void {
         instance = createMacro(macroComponent, block)
       }
 
-      const trackingNodes = [] as InstanceNode[]
-      let trackingY = { y: 0, height: 0 }
-      block.trackings.forEach(async (tracking, index) => {
-        const newNode: InstanceNode = createTracking({
-          tracking,
-          position: block.position,
-          index,
-          component: trackingComponent
-        })
-        trackingY = calculateY(newNode, trackingY)
-        trackingNodes.push(newNode)
-      })
-
+      // const trackingNodes = [] as InstanceNode[]
+      // let trackingY = { y: 0, height: 0 }
+      // block.trackings.forEach(async (tracking, index) => {
+      //   const newNode: InstanceNode = createTracking({
+      //     tracking,
+      //     position: block.position,
+      //     index,
+      //     component: trackingComponent
+      //   })
+      //   trackingY = calculateY(newNode, trackingY)
+      //   trackingNodes.push(newNode)
+      // })
+      createTracking(trackingComponent, block)
       const idInstance = createId(idComponent, block)
 
       const directionsObservation = block.condicaoSaida
@@ -105,12 +92,10 @@ export default function (): void {
         directionsObservation
       )
       if (instance !== null) {
-        const group = figma.group(
-          [idInstance, instance, directionObservationNode, ...trackingNodes],
-          figma.currentPage
-        )
+        const group = figma.group([idInstance, instance, directionObservationNode], figma.currentPage)
 
         group.name = block.figmaId
+        // alignGroupVertical(group)
         const absolutePositionX = lastBlockPosition.x + lastBlockPosition.width
         const absolutePositionY = lastBlockPosition.y + lastBlockPosition.heigth
         if (lastBlockPosition.x !== 0) {
