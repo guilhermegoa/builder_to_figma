@@ -37,17 +37,17 @@ export default function (): void {
 
       const id = createId(idComponent, block)
 
-      const directionsObservation = block.condicaoSaida
-        .map((item) => {
-          const figmaId = json.find((block) => block.id === item.blockDestinationId)?.figmaId
-          return `${item.condiction} --> go to ${figmaId}`
-        })
-        .join('\n\n')
+      const directionsObservation = block.condicaoSaida.map((item) => {
+        const figmaId = json.find((block) => block.id === item.blockDestinationId)?.figmaId
+        return `${item.condiction} --> go to ${figmaId}`
+      })
+
+      directionsObservation.push(`default --> go to ${block.saidaPadrao}`)
 
       const destinyBlock = createObservationComponent(
         observationComponent,
         block,
-        directionsObservation,
+        directionsObservation.join('\n\n'),
         'Directions'
       )
       const mainGroup = createMainGroup({
