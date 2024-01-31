@@ -19,20 +19,25 @@ export function createFigmaGroup(
   return group
 }
 
-export function createMainGroup(
-  groups: GroupNode[],
-  groupName: string,
-  x?: string,
+interface ICreateMainGroup {
+  groups: GroupNode[]
+  groupName: string
+  components?: InstanceNode[]
+  x?: string
   y?: string
-): GroupNode | null {
+}
+export function createMainGroup({ groups, components, groupName, x, y }: ICreateMainGroup): GroupNode | null {
   groups = groups.filter((group) => group !== null && group !== undefined)
-  if (groups.length === 0) return null
+  components = components?.filter((component) => component !== null && component !== undefined)
 
-  const group = figma.group([...groups], figma.currentPage)
+  let groupAndComponents: Array<InstanceNode | GroupNode> = []
+  if (groups.length !== 0) groupAndComponents = [...groups]
+  if (components !== undefined && components?.length > 0) {
+    groupAndComponents.push(...(components as Array<InstanceNode | GroupNode>))
+  }
+  const group = figma.group(groupAndComponents, figma.currentPage)
 
   group.name = groupName
-  // group.y = Number(y)
-  // group.x = Number(x)
 
   return group
 }
@@ -61,4 +66,20 @@ export function alignGroupHorizontal(group: GroupNode, y?: string): void {
       child.x = group.children[index - 1].x + group.children[index - 1].width
     }
   })
+}
+
+interface IAlignGroupBottom {
+  group: GroupNode
+  subjectToChange: GroupNode | InstanceNode
+}
+export function alignGroupBottom({ group, subjectToChange }: IAlignGroupBottom): void {
+  const centerBlock = group.children.find((item) => item.name === 'Message' || item.name === 'Logic Only')
+
+  if (centerBlock === undefined) return
+  const y = centerBlock.y
+  const height = centerBlock?.height
+
+  const groupPositionY = y + height + 10
+
+  subjectToChange.y = groupPositionY
 }

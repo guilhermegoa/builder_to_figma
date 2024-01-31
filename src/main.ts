@@ -6,7 +6,7 @@ import { createId, createTracking, createObservationComponent } from './instance
 import components from './utils/figmaComponents'
 import loadFigmaFonts from './utils/loadFigmaFonts'
 import sendMessageHandler from './utils/sendMessageHandler'
-import { createMainGroup } from './utils/figmaGroups'
+import { alignGroupBottom, createMainGroup } from './utils/figmaGroups'
 
 export default function (): void {
   // CREATE_FIGMA event handler
@@ -35,17 +35,27 @@ export default function (): void {
 
       const trackingsGroup = createTracking(trackingComponent, block)
 
-      createId(idComponent, block)
+      const id = createId(idComponent, block)
 
       const directionsObservation = block.condicaoSaida
         .map((item) => {
           const figmaId = json.find((block) => block.id === item.blockDestinationId)?.figmaId
           return `${item.condiction} --> go to ${figmaId}`
         })
-        .join('\n')
+        .join('\n\n')
 
-      createObservationComponent(observationComponent, block, directionsObservation)
-      createMainGroup([messagesGroup!, trackingsGroup!], block.figmaId)
+      const destinyBlock = createObservationComponent(
+        observationComponent,
+        block,
+        directionsObservation,
+        'Directions'
+      )
+      const mainGroup = createMainGroup({
+        groups: [messagesGroup!, trackingsGroup!],
+        groupName: block.figmaId,
+        components: [id, destinyBlock]
+      })
+      alignGroupBottom({ group: mainGroup!, subjectToChange: destinyBlock })
     }
 
     json.forEach(async (block: BlockList) => {
