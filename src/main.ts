@@ -7,10 +7,10 @@ import {
   createSelect,
   createMacro,
   createSendMessage,
-  createSelectImediate
+  createSelectImediate,
+  createTracking,
+  createObservationComponent
 } from './instances/index'
-import createTracking from './instances/tracking'
-import createObservationComponent from './instances/observation'
 import calculateY from './utils/calculateY'
 // import calculateX from './utils/calculateX'
 
@@ -56,7 +56,7 @@ export default function (): void {
               case 'chat-state':
                 break
               case 'select': {
-                instance = createSelect(selectComponent, block)
+                instance = createSelect(selectComponent, block, action)
                 break
               }
               case 'select-immediate': {
