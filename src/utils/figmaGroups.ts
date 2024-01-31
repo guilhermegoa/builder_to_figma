@@ -22,16 +22,17 @@ export function createFigmaGroup(
 export function createMainGroup(
   groups: GroupNode[],
   groupName: string,
-  x: string,
-  y: string
+  x?: string,
+  y?: string
 ): GroupNode | null {
+  groups = groups.filter((group) => group !== null && group !== undefined)
   if (groups.length === 0) return null
 
   const group = figma.group([...groups], figma.currentPage)
 
   group.name = groupName
-  group.y = Number(y)
-  group.x = Number(x)
+  // group.y = Number(y)
+  // group.x = Number(x)
 
   return group
 }

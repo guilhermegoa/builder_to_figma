@@ -6,6 +6,7 @@ import { createId, createTracking, createObservationComponent } from './instance
 import components from './utils/figmaComponents'
 import loadFigmaFonts from './utils/loadFigmaFonts'
 import sendMessageHandler from './utils/sendMessageHandler'
+import { createMainGroup } from './utils/figmaGroups'
 
 export default function (): void {
   // CREATE_FIGMA event handler
@@ -27,12 +28,12 @@ export default function (): void {
     console.log(json)
 
     function createElements(block: BlockList): void {
-      sendMessageHandler(
+      const messagesGroup = sendMessageHandler(
         [selectComponent, selectImediateComponent, sendMessageComponent, macroComponent],
         block
       )
 
-      createTracking(trackingComponent, block)
+      const trackingsGroup = createTracking(trackingComponent, block)
 
       createId(idComponent, block)
 
@@ -44,25 +45,7 @@ export default function (): void {
         .join('\n')
 
       createObservationComponent(observationComponent, block, directionsObservation)
-      // if (instance !== null) {
-      //   const group = figma.group([idInstance, instance, directionObservationNode], figma.currentPage)
-
-      //   group.name = block.figmaId
-      //   // alignGroupVertical(group)
-      //   const absolutePositionX = lastBlockPosition.x + lastBlockPosition.width
-      //   const absolutePositionY = lastBlockPosition.y + lastBlockPosition.heigth
-      //   if (lastBlockPosition.x !== 0) {
-      //     if (group.x > lastBlockPosition.x && group.x < absolutePositionX) {
-      //       group.x = absolutePositionX + 10
-      //     }
-      //   }
-      //   if (lastBlockPosition.y !== 0) {
-      //     if (group.y > lastBlockPosition.y && group.y < absolutePositionY) {
-      //       group.y = absolutePositionY + 10
-      //     }
-      //   }
-      //   lastBlockPosition = { x: group.x, y: group.y, heigth: group.height, width: group.width }
-      // }
+      createMainGroup([messagesGroup!, trackingsGroup!], block.figmaId)
     }
 
     json.forEach(async (block: BlockList) => {
