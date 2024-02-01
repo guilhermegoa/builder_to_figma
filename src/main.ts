@@ -6,7 +6,8 @@ import { createId, createTracking, createObservationComponent } from './instance
 import components from './utils/figmaUtils/figmaComponents'
 import loadFigmaFonts from './utils/figmaUtils/loadFigmaFonts'
 import sendMessageHandler from './utils/figmaUtils/sendMessageHandler'
-import { alignGroupBottom, createMainGroup } from './utils/figmaUtils/figmaGroups'
+import { alignGroupBottom } from './utils/figmaUtils/group/alignGroupBottom'
+import createMainGroup from './utils/figmaUtils/group/createMainGroup'
 
 export default function (): void {
   // CREATE_FIGMA event handler
@@ -38,10 +39,10 @@ export default function (): void {
     }
 
     function createElements(block: BlockList): void {
-      const messagesGroup = sendMessageHandler(
-        [selectComponent, selectImediateComponent, sendMessageComponent, macroComponent],
+      const messagesGroup = sendMessageHandler({
+        components: [selectComponent, selectImediateComponent, sendMessageComponent, macroComponent],
         block
-      )
+      })
 
       const trackingsGroup = createTracking(trackingComponent, block)
 
