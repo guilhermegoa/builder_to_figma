@@ -1,6 +1,6 @@
-import { type Action, type BlockList } from '../utils/jsonReader'
+import { type BlockList } from '../utils/reader/jsonReader'
 
-function createSendMessage(component: ComponentNode, block: BlockList, action: Action): InstanceNode {
+function createSendMessage(component: ComponentNode, block: BlockList, action: any): InstanceNode {
   const instance: any = component.createInstance()
   instance.name = block.id
   // eslint-disable-next-line max-len

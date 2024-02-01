@@ -1,6 +1,6 @@
-import { createSelect, createSelectImediate, createSendMessage, createMacro } from '../instances'
+import { createSelect, createSelectImediate, createSendMessage, createMacro } from '../../instances'
 import { createFigmaGroup } from './figmaGroups'
-import { type BlockList } from './jsonReader'
+import { type BlockList } from '../reader/jsonReader'
 
 function sendMessageHandler(components: ComponentNode[], block: BlockList): GroupNode | null {
   const [selectComponent, selectImediateComponent, sendMessageComponent, macroComponent] = components

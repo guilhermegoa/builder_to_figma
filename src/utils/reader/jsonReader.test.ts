@@ -1,4 +1,4 @@
-import flow from '../mocks/portalParceiroJson'
+import flow from '../../mocks/portalParceiroJson'
 import { jsonReader } from './jsonReader'
 
 describe('JsonReader', () => {

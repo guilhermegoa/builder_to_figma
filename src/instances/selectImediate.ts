@@ -1,6 +1,6 @@
-import { type Action, type BlockList } from '../utils/jsonReader'
+import { type BlockList } from '../utils/reader/jsonReader'
 
-function createSelectImediate(component: ComponentNode, block: BlockList, action: Action): InstanceNode {
+function createSelectImediate(component: ComponentNode, block: BlockList, action: any): InstanceNode {
   const instance: any = component.createInstance()
   instance.name = block.id
   instance.children[0].children[1].children[0].children[0].children[3].characters = 'Title teste'

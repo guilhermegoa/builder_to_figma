@@ -1,4 +1,4 @@
-import { type Action, type BlockList } from '../utils/jsonReader'
+import { type Action, type BlockList } from '../utils/reader/jsonReader'
 
 function createDynamicContent(component: ComponentNode, block: BlockList, action: Action): InstanceNode {
   const instance: any = component.createInstance()

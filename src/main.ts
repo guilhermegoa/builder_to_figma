@@ -1,12 +1,12 @@
 import { once, showUI } from '@create-figma-plugin/utilities'
 import { type CloseHandler, type CreateFigmaHandler } from './types/eventHandler.type'
-import { getBotJson } from './utils/flowDownloader'
-import { type BlockList } from './utils/jsonReader'
+import { getBotJson } from './utils/reader/flowDownloader'
+import { type BlockList } from './utils/reader/jsonReader'
 import { createId, createTracking, createObservationComponent } from './instances/index'
-import components from './utils/figmaComponents'
-import loadFigmaFonts from './utils/loadFigmaFonts'
-import sendMessageHandler from './utils/sendMessageHandler'
-import { alignGroupBottom, createMainGroup } from './utils/figmaGroups'
+import components from './utils/figmaUtils/figmaComponents'
+import loadFigmaFonts from './utils/figmaUtils/loadFigmaFonts'
+import sendMessageHandler from './utils/figmaUtils/sendMessageHandler'
+import { alignGroupBottom, createMainGroup } from './utils/figmaUtils/figmaGroups'
 
 export default function (): void {
   // CREATE_FIGMA event handler

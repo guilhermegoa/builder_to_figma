@@ -1,4 +1,4 @@
-import { type BlockList } from '../utils/jsonReader'
+import { type BlockList } from '../utils/reader/jsonReader'
 
 function createSelect(component: ComponentNode, block: BlockList, action: any): InstanceNode {
   const instance: any = component.createInstance()

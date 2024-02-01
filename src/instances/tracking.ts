@@ -1,5 +1,5 @@
-import { createFigmaGroup } from '../utils/figmaGroups'
-import { type BlockList } from '../utils/jsonReader'
+import { createFigmaGroup } from '../utils/figmaUtils/figmaGroups'
+import { type BlockList } from '../utils/reader/jsonReader'
 
 function createTracking(component: ComponentNode, block: BlockList): GroupNode | null {
   const instances = block.trackings.map((tracking) => {

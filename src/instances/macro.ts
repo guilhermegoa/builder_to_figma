@@ -1,4 +1,4 @@
-import { type BlockList } from '../utils/jsonReader'
+import { type BlockList } from '../utils/reader/jsonReader'
 
 function createMacro(component: ComponentNode, block: BlockList): InstanceNode {
   const instance: any = component.createInstance()
