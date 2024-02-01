@@ -1,6 +1,11 @@
 import { type BlockList } from '../utils/reader/jsonReader'
 
-function createMacro(component: ComponentNode, block: BlockList): InstanceNode {
+interface IMacro {
+  component: ComponentNode
+  block: BlockList
+}
+
+function createMacro({ component, block }: IMacro): InstanceNode {
   const instance: any = component.createInstance()
   instance.name = block.id
   instance.children[1].characters = block.figmaId

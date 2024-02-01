@@ -1,6 +1,15 @@
 import { type BlockList } from '../utils/reader/jsonReader'
 
-function createSelectImediate(component: ComponentNode, block: BlockList, action: any): InstanceNode {
+interface ISelectImediate {
+  component: ComponentNode
+  block: BlockList
+  action: {
+    content: string
+    options: string[]
+  }
+}
+
+function createSelectImediate({ component, block, action }: ISelectImediate): InstanceNode {
   const instance: any = component.createInstance()
   instance.name = block.id
 

@@ -1,6 +1,11 @@
 import { type BlockList } from '../utils/reader/jsonReader'
 
-function createId(component: ComponentNode, block: BlockList): InstanceNode {
+interface IId {
+  component: ComponentNode
+  block: BlockList
+}
+
+function createId({ component, block }: IId): InstanceNode {
   const instance: InstanceNode = component.createInstance()
   instance.x = Number(block.position.left.replace('px', '')) * 2
   instance.y = Number(block.position.top.replace('px', '')) * 2 - 30

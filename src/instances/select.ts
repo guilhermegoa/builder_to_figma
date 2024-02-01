@@ -1,6 +1,14 @@
 import { type BlockList } from '../utils/reader/jsonReader'
 
-function createSelect(component: ComponentNode, block: BlockList, action: any): InstanceNode {
+interface ISelect {
+  component: ComponentNode
+  block: BlockList
+  action: {
+    options: string[]
+  }
+}
+
+function createSelect({ component, block, action }: ISelect): InstanceNode {
   const instance: any = component.createInstance()
 
   instance.name = block.id

@@ -8,6 +8,11 @@ import loadFigmaFonts from './utils/figmaUtils/loadFigmaFonts'
 import sendMessageHandler from './utils/figmaUtils/sendMessageHandler'
 import { alignGroupBottom, createMainGroup } from './utils/figmaUtils/figmaGroups'
 
+interface ITextObservation {
+  block: BlockList
+  json: BlockList[]
+}
+
 export default function (): void {
   // CREATE_FIGMA event handler
   once<CreateFigmaHandler>('CREATE_FIGMA', async function (key: string): Promise<void> {
@@ -27,7 +32,7 @@ export default function (): void {
     const json = await getBotJson(key)
     console.log(json)
 
-    function createTextObservations(block: BlockList, json: BlockList[]): string[] {
+    function createTextObservations({ block, json }: ITextObservation): string[] {
       const directionsObservation = block.condicaoSaida.map((item) => {
         const figmaId = json.find((block) => block.id === item.blockDestinationId)?.figmaId
         return `${item.condiction} --> go to ${figmaId}`
@@ -38,16 +43,16 @@ export default function (): void {
     }
 
     function createElements(block: BlockList): void {
-      const messagesGroup = sendMessageHandler(
-        [selectComponent, selectImediateComponent, sendMessageComponent, macroComponent],
+      const messagesGroup = sendMessageHandler({
+        components: [selectComponent, selectImediateComponent, sendMessageComponent, macroComponent],
         block
-      )
+      })
 
       const trackingsGroup = createTracking(trackingComponent, block)
 
-      const id = createId(idComponent, block)
+      const id = createId({ component: idComponent, block })
 
-      const directionsObservation = createTextObservations(block, json)
+      const directionsObservation = createTextObservations({ block, json })
 
       const destinyBlock = createObservationComponent(
         observationComponent,

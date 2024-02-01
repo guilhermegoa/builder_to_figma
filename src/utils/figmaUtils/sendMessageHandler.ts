@@ -2,7 +2,12 @@ import { createSelect, createSelectImediate, createSendMessage, createMacro } fr
 import { createFigmaGroup } from './figmaGroups'
 import { type BlockList } from '../reader/jsonReader'
 
-function sendMessageHandler(components: ComponentNode[], block: BlockList): GroupNode | null {
+interface ISendNessageHandler {
+  components: ComponentNode[]
+  block: BlockList
+}
+
+function sendMessageHandler({ components, block }: ISendNessageHandler): GroupNode | null {
   const [selectComponent, selectImediateComponent, sendMessageComponent, macroComponent] = components
 
   if (block.actions.length > 0) {
@@ -13,17 +18,17 @@ function sendMessageHandler(components: ComponentNode[], block: BlockList): Grou
             case 'chat-state':
               break
             case 'select': {
-              return createSelect(selectComponent, block, action)
+              return createSelect({ component: selectComponent, block, action })
             }
             case 'select-immediate': {
-              return createSelectImediate(selectImediateComponent, block, action)
+              return createSelectImediate({ component: selectImediateComponent, block, action })
             }
             case 'text':
             case 'SendMessage': {
-              return createSendMessage(sendMessageComponent, block, action)
+              return createSendMessage({ component: sendMessageComponent, block, action })
             }
             default:
-              return createMacro(macroComponent, block)
+              return createMacro({ component: macroComponent, block })
           }
         }
         return false
@@ -33,7 +38,7 @@ function sendMessageHandler(components: ComponentNode[], block: BlockList): Grou
     const group = createFigmaGroup(components, 'Message', 'vertical')
     return group
   } else {
-    const component = createMacro(macroComponent, block)
+    const component = createMacro({ component: macroComponent, block })
     const group = createFigmaGroup([component], 'Logic Only')
     return group
   }
