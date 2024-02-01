@@ -1,13 +1,12 @@
 import { createSelect, createSelectImediate, createSendMessage, createMacro } from '../../instances'
-import { createFigmaGroup } from './figmaGroups'
 import { type BlockList } from '../reader/jsonReader'
+import createFigmaGroup from './group/createFigmaGroup'
 
-interface ISendNessageHandler {
+interface ISendMessageHandler {
   components: ComponentNode[]
   block: BlockList
 }
-
-function sendMessageHandler({ components, block }: ISendNessageHandler): GroupNode | null {
+export default function sendMessageHandler({ components, block }: ISendMessageHandler): GroupNode | null {
   const [selectComponent, selectImediateComponent, sendMessageComponent, macroComponent] = components
 
   if (block.actions.length > 0) {
@@ -35,13 +34,11 @@ function sendMessageHandler({ components, block }: ISendNessageHandler): GroupNo
       })
       .filter((item: any) => item !== false)
     if (components.length === 0) return null
-    const group = createFigmaGroup(components, 'Message', 'vertical')
+    const group = createFigmaGroup({ components, groupName: 'Message', align: 'vertical' })
     return group
   } else {
     const component = createMacro({ component: macroComponent, block })
-    const group = createFigmaGroup([component], 'Logic Only')
+    const group = createFigmaGroup({ components: [component], groupName: 'Logic Only' })
     return group
   }
 }
-
-export default sendMessageHandler

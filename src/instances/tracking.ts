@@ -1,4 +1,4 @@
-import { createFigmaGroup } from '../utils/figmaUtils/figmaGroups'
+import createFigmaGroup from '../utils/figmaUtils/group/createFigmaGroup'
 import { type BlockList } from '../utils/reader/jsonReader'
 
 function createTracking(component: ComponentNode, block: BlockList): GroupNode | null {
@@ -21,7 +21,7 @@ function createTracking(component: ComponentNode, block: BlockList): GroupNode |
     return instance
   })
 
-  const trackingGroup = createFigmaGroup(instances, 'Trackings', 'vertical')
+  const trackingGroup = createFigmaGroup({ components: instances, groupName: 'Trackings', align: 'vertical' })
 
   return trackingGroup
 }

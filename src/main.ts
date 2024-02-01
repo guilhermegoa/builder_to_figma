@@ -6,7 +6,8 @@ import { createId, createTracking, createObservationComponent } from './instance
 import components from './utils/figmaUtils/figmaComponents'
 import loadFigmaFonts from './utils/figmaUtils/loadFigmaFonts'
 import sendMessageHandler from './utils/figmaUtils/sendMessageHandler'
-import { alignGroupBottom, createMainGroup } from './utils/figmaUtils/figmaGroups'
+import { alignGroupBottom } from './utils/figmaUtils/group/alignGroupBottom'
+import createMainGroup from './utils/figmaUtils/group/createMainGroup'
 
 interface ITextObservation {
   block: BlockList
