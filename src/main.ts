@@ -2,13 +2,16 @@ import { once, showUI } from '@create-figma-plugin/utilities'
 import { type CloseHandler, type CreateFigmaHandler } from './types/eventHandler.type'
 import { getBotJson } from './utils/reader/flowDownloader'
 import { type BlockList } from './utils/reader/jsonReader'
-import { createId, createTracking, createObservationComponent } from './instances/index'
 import components from './utils/figmaUtils/figmaComponents'
 import loadFigmaFonts from './utils/figmaUtils/loadFigmaFonts'
 import sendMessageHandler from './utils/figmaUtils/sendMessageHandler'
 import { alignGroupBottom } from './utils/figmaUtils/group/alignGroupBottom'
 import createMainGroup from './utils/figmaUtils/group/createMainGroup'
 import createApi from './instances/api'
+import configMainFrame from './utils/figmaUtils/configMainFrame'
+import createTracking from './instances/tracking'
+import createId from './instances/id'
+import createObservationComponent from './instances/observation'
 
 interface ITextObservation {
   block: BlockList
@@ -27,7 +30,8 @@ export default function (): void {
       selectImediateComponent,
       sendMessageComponent,
       trackingComponent,
-      apiComponent
+      apiComponent,
+      titleComponent
     ] = await components
 
     await loadFigmaFonts()
@@ -45,7 +49,7 @@ export default function (): void {
       return directionsObservation
     }
 
-    function createElements(block: BlockList): void {
+    function createElements(block: BlockList, frame: FrameNode): void {
       const messagesGroup = sendMessageHandler({
         components: [selectComponent, selectImediateComponent, sendMessageComponent, macroComponent],
         block
@@ -70,11 +74,17 @@ export default function (): void {
         components: [id, destinyBlock]
       })
       alignGroupBottom({ group: mainGroup!, subjectToChange: destinyBlock })
+
+      frame.appendChild(mainGroup!)
     }
 
+    const mainFrame = figma.createFrame()
+
     json.forEach(async (block: BlockList) => {
-      createElements(block)
+      createElements(block, mainFrame)
     })
+
+    configMainFrame(mainFrame, titleComponent)
 
     figma.closePlugin()
   })
