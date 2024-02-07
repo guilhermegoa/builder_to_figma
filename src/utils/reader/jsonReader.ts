@@ -15,6 +15,7 @@ export interface BlockList {
     category?: string
     action?: string
   }>
+  apiRequests: IIdentifyedApiRequest[]
 }
 
 interface IndetifyedContent {
@@ -65,6 +66,11 @@ export interface IValidationCondiction {
 }
 
 interface ICustomAction {
+  method?: string
+  body?: string
+  uri?: string
+  responseStatusVariable?: string
+  requestBodyVariable?: string
   $id: string
   $typeOfContent?: string
   type: string
@@ -112,7 +118,8 @@ export function jsonReader({ flow }: any): BlockList[] {
       // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
       condicaoSaida: identifyOutpoutConditions(flow[key].$conditionOutputs),
       // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-      trackings: identifyTrackings(flow[key])
+      trackings: identifyTrackings(flow[key]),
+      apiRequests: identifyApiRequests(flow[key])
     })
   })
   return listBlocos
@@ -236,4 +243,36 @@ function identifyTrackings({
     })
   const trackings = [...enteringTrackings, ...leavingTrackings]
   return trackings
+}
+
+interface IIdentifyedApiRequest {
+  $id: string
+  $title: string
+  settings: {
+    headers: { authorization?: string }
+    method?: string
+    body?: string
+    uri?: string
+    responseStatusVariable?: string
+    responseBodyVariable?: string
+  }
+}
+function identifyApiRequests({
+  $enteringCustomActions,
+  $leavingCustomActions
+}: {
+  $enteringCustomActions: ICustomAction[]
+  $leavingCustomActions: ICustomAction[]
+}): IIdentifyedApiRequest[] {
+  const joinActions = [...$enteringCustomActions, ...$leavingCustomActions]
+  const apiRequests = joinActions.filter((action) => action.type === 'ProcessHttp')
+  const filteredApiRequests = apiRequests.map((request) => {
+    return {
+      $id: request.$id,
+      $title: request.$title,
+      settings: request.settings
+    }
+  }) as IIdentifyedApiRequest[]
+  console.log(filteredApiRequests)
+  return filteredApiRequests
 }
