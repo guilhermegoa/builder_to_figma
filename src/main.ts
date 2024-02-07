@@ -73,7 +73,30 @@ export default function (): void {
         groupName: block.figmaId,
         components: [id, destinyBlock]
       })
+
       alignGroupBottom({ group: mainGroup!, subjectToChange: destinyBlock })
+
+      // if (instance !== null) {
+      //   const group = figma.group(
+      //     [idInstance, instance, directionObservationNode, ...trackingNodes],
+      //     figma.currentPage
+      //   )
+
+      //   group.name = block.figmaId
+      //   const absolutePositionX = lastBlockPosition.x + lastBlockPosition.width
+      //   const absolutePositionY = lastBlockPosition.y + lastBlockPosition.heigth
+      //   if (lastBlockPosition.x !== 0) {
+      //     if (group.x > lastBlockPosition.x && group.x < absolutePositionX) {
+      //       group.x = absolutePositionX + 10
+      //     }
+      //   }
+      //   if (lastBlockPosition.y !== 0) {
+      //     if (group.y > lastBlockPosition.y && group.y < absolutePositionY) {
+      //       group.y = absolutePositionY + 10
+      //     }
+      //   }
+      //   lastBlockPosition = { x: group.x, y: group.y, heigth: group.height, width: group.width }
+      // }
 
       frame.appendChild(mainGroup!)
     }
@@ -84,7 +107,7 @@ export default function (): void {
       createElements(block, mainFrame)
     })
 
-    configMainFrame(mainFrame, titleComponent)
+    configMainFrame({ frame: mainFrame, titleComponent })
 
     figma.closePlugin()
   })

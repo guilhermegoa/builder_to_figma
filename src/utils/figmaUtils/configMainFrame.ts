@@ -1,6 +1,11 @@
 import createFigmaGroup from './group/createFigmaGroup'
 
-function configMainFrame(frame: FrameNode, titleComponent: ComponentNode): void {
+interface iConfigMainFrame {
+  frame: FrameNode
+  titleComponent: ComponentNode
+}
+
+function configMainFrame({ frame, titleComponent }: iConfigMainFrame): void {
   let minX = Number.MAX_SAFE_INTEGER
   let minY = Number.MAX_SAFE_INTEGER
   let maxX = 0
