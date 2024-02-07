@@ -2,7 +2,7 @@ import { alignGroupHorizontal } from './alignGroupHorizontal'
 import { alignGroupVertical } from './alignGroupVertical'
 
 interface ICreateFigmaGroup {
-  components: InstanceNode[]
+  components: Array<InstanceNode | FrameNode>
   groupName: string
   align?: 'horizontal' | 'vertical'
 }

@@ -1,3 +1,5 @@
+import createFigmaGroup from './group/createFigmaGroup'
+
 function configMainFrame(frame: FrameNode, titleComponent: ComponentNode): void {
   let minX = Number.MAX_SAFE_INTEGER
   let minY = Number.MAX_SAFE_INTEGER
@@ -19,8 +21,6 @@ function configMainFrame(frame: FrameNode, titleComponent: ComponentNode): void 
 
   const frameTitle = titleComponent.createInstance()
 
-  console.log(isFrameBiggerThanTitle, frameWidth, titleComponentWidth)
-
   if (isFrameBiggerThanTitle) {
     frameTitle.resize(frameWidth, frameTitle.height)
   }
@@ -38,6 +38,8 @@ function configMainFrame(frame: FrameNode, titleComponent: ComponentNode): void 
   frame.fills = [{ type: 'SOLID', color: { r: 1, g: 1, b: 1 } }]
 
   figma.currentPage.appendChild(frame)
+
+  createFigmaGroup({ components: [frame, frameTitle], groupName: 'Builder to Figma' })
 }
 
 export default configMainFrame
