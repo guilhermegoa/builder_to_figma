@@ -8,6 +8,7 @@ import loadFigmaFonts from './utils/figmaUtils/loadFigmaFonts'
 import sendMessageHandler from './utils/figmaUtils/sendMessageHandler'
 import { alignGroupBottom } from './utils/figmaUtils/group/alignGroupBottom'
 import createMainGroup from './utils/figmaUtils/group/createMainGroup'
+import createApi from './instances/api'
 
 interface ITextObservation {
   block: BlockList
@@ -25,7 +26,8 @@ export default function (): void {
       selectComponent,
       selectImediateComponent,
       sendMessageComponent,
-      trackingComponent
+      trackingComponent,
+      apiComponent
     ] = await components
 
     await loadFigmaFonts()
@@ -55,6 +57,7 @@ export default function (): void {
 
       const directionsObservation = createTextObservations({ block, json })
 
+      createApi({ component: apiComponent, block })
       const destinyBlock = createObservationComponent(
         observationComponent,
         block,
