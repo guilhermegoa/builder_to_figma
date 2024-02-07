@@ -7,7 +7,8 @@ async function loadFigmaComponents(): Promise<ComponentNode[]> {
     selectComponent,
     selectImediateComponent,
     sendMessageComponent,
-    trackingComponent
+    trackingComponent,
+    apiComponent
   ] = await Promise.all([
     figma.importComponentByKeyAsync('6ca6d4651bef9bda556960d72a8427c0f44f25e0'),
     // figma.importComponentByKeyAsync('2f43d0db522f94bc1a84b8f6a531fcde255679c4'),
@@ -16,7 +17,8 @@ async function loadFigmaComponents(): Promise<ComponentNode[]> {
     figma.importComponentByKeyAsync('487efbf0f24c7f25ed162ea14e8389816388d0b1'),
     figma.importComponentByKeyAsync('4165197120546034430934bb0c367932d747ea28'),
     figma.importComponentByKeyAsync('2f43d0db522f94bc1a84b8f6a531fcde255679c4'),
-    figma.importComponentByKeyAsync('0dececd32f95c805215e31e5dedbdbc9bb589e93')
+    figma.importComponentByKeyAsync('0dececd32f95c805215e31e5dedbdbc9bb589e93'),
+    figma.importComponentByKeyAsync('a8a6bbf0dbf4c4c8a9f0bbc4bb0813cebb5887ca')
   ])
   return [
     idComponent,
@@ -25,7 +27,8 @@ async function loadFigmaComponents(): Promise<ComponentNode[]> {
     selectComponent,
     selectImediateComponent,
     sendMessageComponent,
-    trackingComponent
+    trackingComponent,
+    apiComponent
   ]
 }
 
