@@ -61,7 +61,7 @@ export default function (): void {
 
       const directionsObservation = createTextObservations({ block, json })
 
-      createApi({ component: apiComponent, block })
+      const api = createApi({ component: apiComponent, block })
       const destinyBlock = createObservationComponent(
         observationComponent,
         block,
@@ -69,7 +69,7 @@ export default function (): void {
         'Directions'
       )
       const mainGroup = createMainGroup({
-        groups: [messagesGroup!, trackingsGroup!],
+        groups: [messagesGroup!, trackingsGroup!, api!],
         groupName: block.figmaId,
         components: [id, destinyBlock]
       })
