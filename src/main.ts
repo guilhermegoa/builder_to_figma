@@ -31,16 +31,21 @@ export default function (): void {
     const mainFrame = figma.createFrame()
 
     json.forEach(async (block: BlockList) => {
-      createElements(block, mainFrame, json, [
-        selectComponent,
-        selectImediateComponent,
-        sendMessageComponent,
-        macroComponent,
-        trackingComponent,
-        idComponent,
-        apiComponent,
-        observationComponent
-      ])
+      createElements({
+        block,
+        frame: mainFrame,
+        json,
+        components: [
+          selectComponent,
+          selectImediateComponent,
+          sendMessageComponent,
+          macroComponent,
+          trackingComponent,
+          idComponent,
+          apiComponent,
+          observationComponent
+        ]
+      })
     })
 
     configMainFrame({ frame: mainFrame, titleComponent })

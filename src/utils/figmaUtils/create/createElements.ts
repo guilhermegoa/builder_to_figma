@@ -11,11 +11,15 @@ import { createTextObservations } from './createTextObservations'
 
 let lastBlockPosition = { x: 0, y: 0, height: 0, width: 0 }
 
-export default function createElements(
-  block: BlockList,
-  frame: FrameNode,
-  json: BlockList[],
-  [
+interface ICreateElements {
+  block: BlockList
+  frame: FrameNode
+  json: BlockList[]
+  components: ComponentNode[]
+}
+
+export default function createElements({ block, frame, json, components }: ICreateElements): void {
+  const [
     selectComponent,
     selectImediateComponent,
     sendMessageComponent,
@@ -24,8 +28,8 @@ export default function createElements(
     idComponent,
     apiComponent,
     observationComponent
-  ]: ComponentNode[]
-): void {
+  ] = components
+
   const messagesGroup = sendMessageHandler({
     components: [selectComponent, selectImediateComponent, sendMessageComponent, macroComponent],
     block
@@ -37,6 +41,7 @@ export default function createElements(
 
   const directionsObservation = createTextObservations({ block, json })
 
+  const api = createApi({ component: apiComponent, block })
   createApi({ component: apiComponent, block })
   const destinyBlock = createObservationComponent(
     observationComponent,
@@ -44,8 +49,9 @@ export default function createElements(
     directionsObservation.join('\n\n'),
     'Directions'
   )
+
   const mainGroup = createMainGroup({
-    groups: [messagesGroup!, trackingsGroup!],
+    groups: [messagesGroup!, trackingsGroup!, api!],
     groupName: block.figmaId,
     components: [id, destinyBlock]
   })
