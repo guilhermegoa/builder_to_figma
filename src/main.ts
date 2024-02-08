@@ -4,19 +4,8 @@ import { getBotJson } from './utils/reader/flowDownloader'
 import { type BlockList } from './utils/reader/jsonReader'
 import components from './utils/figmaUtils/figmaComponents'
 import loadFigmaFonts from './utils/figmaUtils/loadFigmaFonts'
-import sendMessageHandler from './utils/figmaUtils/sendMessageHandler'
-import { alignGroupBottom } from './utils/figmaUtils/group/alignGroupBottom'
-import createMainGroup from './utils/figmaUtils/group/createMainGroup'
-import createApi from './instances/api'
 import configMainFrame from './utils/figmaUtils/configMainFrame'
-import createTracking from './instances/tracking'
-import createId from './instances/id'
-import createObservationComponent from './instances/observation'
-
-interface ITextObservation {
-  block: BlockList
-  json: BlockList[]
-}
+import createElements from './utils/figmaUtils/createElements'
 
 export default function (): void {
   // CREATE_FIGMA event handler
@@ -39,72 +28,19 @@ export default function (): void {
     const json = await getBotJson(key)
     console.log(json)
 
-    function createTextObservations({ block, json }: ITextObservation): string[] {
-      const directionsObservation = block.condicaoSaida.map((item) => {
-        const figmaId = json.find((block) => block.id === item.blockDestinationId)?.figmaId
-        return `${item.condiction} --> go to ${figmaId}`
-      })
-
-      directionsObservation.push(`default --> go to ${block.saidaPadrao}`)
-      return directionsObservation
-    }
-
-    function createElements(block: BlockList, frame: FrameNode): void {
-      const messagesGroup = sendMessageHandler({
-        components: [selectComponent, selectImediateComponent, sendMessageComponent, macroComponent],
-        block
-      })
-
-      const trackingsGroup = createTracking(trackingComponent, block)
-
-      const id = createId({ component: idComponent, block })
-
-      const directionsObservation = createTextObservations({ block, json })
-
-      const api = createApi({ component: apiComponent, block })
-      const destinyBlock = createObservationComponent(
-        observationComponent,
-        block,
-        directionsObservation.join('\n\n'),
-        'Directions'
-      )
-      const mainGroup = createMainGroup({
-        groups: [messagesGroup!, trackingsGroup!, api!],
-        groupName: block.figmaId,
-        components: [id, destinyBlock]
-      })
-
-      alignGroupBottom({ group: mainGroup!, subjectToChange: destinyBlock })
-
-      // if (instance !== null) {
-      //   const group = figma.group(
-      //     [idInstance, instance, directionObservationNode, ...trackingNodes],
-      //     figma.currentPage
-      //   )
-
-      //   group.name = block.figmaId
-      //   const absolutePositionX = lastBlockPosition.x + lastBlockPosition.width
-      //   const absolutePositionY = lastBlockPosition.y + lastBlockPosition.heigth
-      //   if (lastBlockPosition.x !== 0) {
-      //     if (group.x > lastBlockPosition.x && group.x < absolutePositionX) {
-      //       group.x = absolutePositionX + 10
-      //     }
-      //   }
-      //   if (lastBlockPosition.y !== 0) {
-      //     if (group.y > lastBlockPosition.y && group.y < absolutePositionY) {
-      //       group.y = absolutePositionY + 10
-      //     }
-      //   }
-      //   lastBlockPosition = { x: group.x, y: group.y, heigth: group.height, width: group.width }
-      // }
-
-      frame.appendChild(mainGroup!)
-    }
-
     const mainFrame = figma.createFrame()
 
     json.forEach(async (block: BlockList) => {
-      createElements(block, mainFrame)
+      createElements(block, mainFrame, json, [
+        selectComponent,
+        selectImediateComponent,
+        sendMessageComponent,
+        macroComponent,
+        trackingComponent,
+        idComponent,
+        apiComponent,
+        observationComponent
+      ])
     })
 
     configMainFrame({ frame: mainFrame, titleComponent })

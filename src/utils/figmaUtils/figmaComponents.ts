@@ -22,6 +22,7 @@ async function loadFigmaComponents(): Promise<ComponentNode[]> {
     figma.importComponentByKeyAsync('a8a6bbf0dbf4c4c8a9f0bbc4bb0813cebb5887ca'),
     figma.importComponentByKeyAsync('be02148b769c5c47f79da2a4d77f696f578624b1')
   ])
+
   return [
     idComponent,
     macroComponent,

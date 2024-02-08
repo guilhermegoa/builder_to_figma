@@ -273,6 +273,5 @@ function identifyApiRequests({
       settings: request.settings
     }
   }) as IIdentifyedApiRequest[]
-  console.log(filteredApiRequests)
   return filteredApiRequests
 }
