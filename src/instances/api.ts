@@ -1,4 +1,5 @@
 /* eslint-disable max-len */
+import createFigmaGroup from '../utils/figmaUtils/group/createFigmaGroup'
 import { type BlockList } from '../utils/reader/jsonReader'
 
 interface IId {
@@ -6,7 +7,7 @@ interface IId {
   block: BlockList
 }
 
-export default function createApi({ component, block }: IId): InstanceNode[] {
+export default function createApi({ component, block }: IId): GroupNode | null {
   const apiComponents: InstanceNode[] = block.apiRequests.map((request) => {
     const instance: InstanceNode = component.createInstance()
     instance.x = Number(block.position.left.replace('px', '')) * 2 + 240
@@ -23,5 +24,6 @@ variable: ${request.settings?.responseBodyVariable ?? '-'}`
     figma.currentPage.appendChild(instance)
     return instance
   })
-  return apiComponents
+  const group = createFigmaGroup({ components: apiComponents, groupName: 'API Requests', align: 'vertical' })
+  return group
 }
