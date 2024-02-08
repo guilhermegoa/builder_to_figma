@@ -42,7 +42,7 @@ export default function createElements({ block, frame, json, components }: ICrea
   const directionsObservation = createTextObservations({ block, json })
 
   const api = createApi({ component: apiComponent, block })
-  createApi({ component: apiComponent, block })
+
   const destinyBlock = createObservationComponent(
     observationComponent,
     block,
