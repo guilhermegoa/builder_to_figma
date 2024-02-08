@@ -5,7 +5,7 @@ import { type BlockList } from './utils/reader/jsonReader'
 import components from './utils/figmaUtils/figmaComponents'
 import loadFigmaFonts from './utils/figmaUtils/loadFigmaFonts'
 import configMainFrame from './utils/figmaUtils/configMainFrame'
-import createElements from './utils/figmaUtils/createElements'
+import createElements from './utils/figmaUtils/create/createElements'
 
 export default function (): void {
   // CREATE_FIGMA event handler

@@ -1,9 +1,9 @@
-import createMacro from '../../instances/macro'
-import createSelect from '../../instances/select'
-import createSelectImediate from '../../instances/selectImediate'
-import createSendMessage from '../../instances/sendMessage'
-import { type BlockList } from '../reader/jsonReader'
-import createFigmaGroup from './group/createFigmaGroup'
+import createMacro from '../../../instances/macro'
+import createSelect from '../../../instances/select'
+import createSelectImediate from '../../../instances/selectImediate'
+import createSendMessage from '../../../instances/sendMessage'
+import { type BlockList } from '../../reader/jsonReader'
+import createFigmaGroup from '../group/createFigmaGroup'
 
 interface ISendMessageHandler {
   components: ComponentNode[]
