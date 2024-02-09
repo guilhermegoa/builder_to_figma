@@ -2,7 +2,6 @@
 *.log
 *.css.d.ts
 /build/
-/manifest.json
 node_modules/
 /coverage/
 nul

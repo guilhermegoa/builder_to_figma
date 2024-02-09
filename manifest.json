@@ -1,0 +1,11 @@
+{
+  "api": "2.0.0",
+  "editorType": ["figma"],
+  "id": "1337823236323715481",
+  "name": "Builder to Figma",
+  "main": "build/main.js",
+  "ui": "build/ui.js",
+  "networkAccess": {
+    "allowedDomains": ["https://msging.net/"]
+  }
+}
