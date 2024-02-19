@@ -1,3 +1,4 @@
+/* eslint-disable react/react-in-jsx-scope */
 import {
   Button,
   Columns,
@@ -12,9 +13,9 @@ import { emit } from '@create-figma-plugin/utilities'
 import { h } from 'preact'
 import { useCallback, useState } from 'preact/hooks'
 
-import { CloseHandler, CreateFigmaHandler } from './types/eventHandler.type'
+import { type CloseHandler, type CreateFigmaHandler } from './types/eventHandler.type'
 
-function Plugin() {
+function Plugin(): h.JSX.Element {
   const [key, setKey] = useState('')
 
   const handleCreateFigmaHandlerButtonClick = useCallback(
@@ -31,20 +32,20 @@ function Plugin() {
   }, [])
 
   return (
-    <Container space="medium">
-      <VerticalSpace space="large" />
+    <Container space='medium'>
+      <VerticalSpace space='large' />
       <Text>
         <Muted>Figma to Builder</Muted>
       </Text>
-      <VerticalSpace space="small" />
+      <VerticalSpace space='small' />
       <Textbox
         onValueInput={setKey}
         value={key}
-        variant="border"
-        placeholder="Key c2ltd3BwaG1ncmlPblByZz09"
+        variant='border'
+        placeholder='Key c2ltd3BwaG1ncmlPblByZz09'
       />
-      <VerticalSpace space="extraLarge" />
-      <Columns space="extraSmall">
+      <VerticalSpace space='extraLarge' />
+      <Columns space='extraSmall'>
         <Button fullWidth onClick={handleCreateFigmaHandlerButtonClick}>
           Create
         </Button>
@@ -52,7 +53,7 @@ function Plugin() {
           Close
         </Button>
       </Columns>
-      <VerticalSpace space="small" />
+      <VerticalSpace space='small' />
     </Container>
   )
 }
